@@ -1,0 +1,121 @@
+﻿@model List<MyWebApp.Models.Item>
+@{
+    ViewData["Title"] = "Items List";
+}
+
+<h2 class="text-center">Items List</h2>
+
+
+<a asp-controller="Admin" asp-action="Dashboard" class="btn btn-secondary">
+    <i class="fas fa-arrow-left"></i> Back to Dashboard
+</a>
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        @TempData["Message"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="d-flex justify-content-end mb-3">
+    <a asp-controller="Items" asp-action="AddItem" class="btn btn-primary">
+        <i class="fas fa-plus-circle"></i> Add New Item
+    </a>
+</div>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-success">
+        <tr>
+            <th>ID</th>
+            <th>Item Name</th>
+            <th>Category</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.ItemName</td>
+                <td>@item.Category</td>
+                <td>@item.Quantity</td>
+                <td>$@item.Price</td>
+                <td>
+                    <div class="btn-group">
+                        <a asp-controller="Items" asp-action="UpdateItem" asp-route-id="@item.Id" class="btn btn-warning btn-sm">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a asp-controller="Items" asp-action="DeleteItem" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info text-center">
+        No items found in the database. <a asp-action="AddItem">Add your first item</a>.
+    </div>
+}
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
+<style>
+    .table {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-success {
+        background-color: #4CAF50 !important;
+        color: white;
+    }
+
+    .btn-group {
+        display: flex;
+        gap: 5px;
+    }
+
+    .back-button {
+        position: absolute;
+        top: 80px;
+        left: 20px;
+        background-color: #ff5733;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        transition: 0.3s ease;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+        .back-button:hover {
+            background-color: #c70039;
+        }
+
+
+    .alert {
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+</style>

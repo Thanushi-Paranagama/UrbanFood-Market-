@@ -1,0 +1,130 @@
+﻿@model MyWebApp.Models.Item
+@{
+    ViewData["Title"] = "Update Item";
+}
+<!-- Back Button (Top-Left Corner) -->
+<button onclick="goBack()" class="back-button">← Back</button>
+<h2 class="title">Update Item</h2>
+<a asp-controller="Admin" asp-action="Dashboard" class="btn btn-secondary">
+    <i class="fas fa-arrow-left"></i> Back to Dashboard
+</a>
+<form method="post" asp-controller="Items" asp-action="Update" class="form-container">
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <label for="category">Category:</label>
+    <select name="Category" id="category" required>
+        <option value="Vegetables" selected="@(Model.Category == "Vegetables" ? "selected" : null)">Vegetables</option>
+        <option value="Fruits" selected="@(Model.Category == "Fruits" ? "selected" : null)">Fruits</option>
+        <option value="Dairy Products" selected="@(Model.Category == "Dairy Products" ? "selected" : null)">Dairy Products</option>
+        <option value="Bakery Items" selected="@(Model.Category == "Bakery Items" ? "selected" : null)">Bakery Items</option>
+        <option value="Handcrafts" selected="@(Model.Category == "Handcrafts" ? "selected" : null)">Handcrafts</option>
+    </select>
+    <label for="itemName">Item Name:</label>
+    <input type="text" name="ItemName" id="itemName" value="@Model.ItemName" required />
+    <label for="quantity">Quantity:</label>
+    <input type="number" name="Quantity" id="quantity" value="@Model.Quantity" required />
+    <label for="price">Price:</label>
+    <input type="number" name="Price" id="price" step="0.01" value="@Model.Price" required />
+    <button type="submit" class="save-button">Update</button>
+</form>
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <p class="success-message">@ViewBag.Message</p>
+}
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <p class="error-message">@ViewBag.ErrorMessage</p>
+}
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .back-button {
+        position: absolute;
+        top: 80px;
+        left: 20px;
+        background-color: #ff5733;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        transition: 0.3s ease;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+        .back-button:hover {
+            background-color: #c70039;
+        }
+
+    .title {
+        color: #333;
+        margin-top: 60px;
+    }
+
+    .form-container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        width: 300px;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    label {
+        font-weight: bold;
+        text-align: left;
+        display: block;
+    }
+
+    select, input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 4px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .save-button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        .save-button:hover {
+            background-color: #0056b3;
+        }
+
+    .success-message {
+        color: green;
+        margin-top: 15px;
+        font-weight: bold;
+    }
+
+    .error-message {
+        color: red;
+        margin-top: 15px;
+        font-weight: bold;
+    }
+</style> 
+
+
+

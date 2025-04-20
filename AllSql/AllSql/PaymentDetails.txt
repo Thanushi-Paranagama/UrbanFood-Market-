@@ -1,0 +1,38 @@
+-- Create payment details table
+CREATE TABLE PaymentDetails (
+    ID NUMBER PRIMARY KEY,
+    OrderID NUMBER NOT NULL,
+    CardholderName VARCHAR2(255) NOT NULL,
+    CardLastFour VARCHAR2(4) NOT NULL,
+    Amount NUMBER(10,2) NOT NULL,
+    PaymentDate DATE NOT NULL,
+    PaymentStatus VARCHAR2(50) NOT NULL,
+    CONSTRAINT fk_payment_order FOREIGN KEY (OrderID) REFERENCES Orders(ID)
+);
+
+-- Check and create the PaymentDetails table
+DECLARE
+    v_count NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = 'PAYMENTDETAILS';
+    IF v_count = 0 THEN
+        EXECUTE IMMEDIATE 'CREATE TABLE PaymentDetails (
+            ID NUMBER PRIMARY KEY,
+            OrderID NUMBER NOT NULL,
+            CardholderName VARCHAR2(255) NOT NULL,
+            CardLastFour VARCHAR2(4) NOT NULL,
+            Amount NUMBER(10,2) NOT NULL,
+            PaymentDate DATE NOT NULL,
+            PaymentStatus VARCHAR2(50) NOT NULL,
+            CONSTRAINT fk_payment_order FOREIGN KEY (OrderID) REFERENCES Orders(ID)
+        )';
+    END IF;
+END;
+/
+
+-- Create sequence for payment details
+CREATE SEQUENCE payment_details_seq
+    START WITH 1
+    INCREMENT BY 1
+    NOCACHE
+    NOCYCLE;

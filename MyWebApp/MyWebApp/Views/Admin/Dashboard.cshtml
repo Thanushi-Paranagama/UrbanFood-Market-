@@ -1,0 +1,117 @@
+﻿@model MyWebApp.Models.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+}
+
+<div class="dashboard-header">
+    <h1 class="page-title">Admin Dashboard</h1>
+</div>
+
+<div class="welcome-banner">
+    <h3>Welcome back, Admin!</h3>
+    <p>Here's what's happening with your farm products today.</p>
+</div>
+
+<div class="stats-container">
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fas fa-box"></i>
+        </div>
+        <div class="stat-value">@Model.ItemsCount</div>
+        <div class="stat-label">Total Items</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fas fa-shopping-cart"></i>
+        </div>
+        <div class="stat-value">@Model.OrdersToday</div>
+        <div class="stat-label">Orders Today</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-value">@Model.ActiveCustomers</div>
+        <div class="stat-label">Active Customers</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fas fa-dollar-sign"></i>
+        </div>
+        <div class="stat-value">Rs.@Model.RevenueToday.ToString("N0")</div>
+        <div class="stat-label">Revenue Today</div>
+    </div>
+</div>
+
+<div class="quick-actions">
+    <h3>Quick Actions</h3>
+    <div class="action-buttons">
+        <a href="/Items/AddItem" class="btn btn-primary btn-lg">
+            <i class="fas fa-plus"></i> Add New Items for Customers
+        </a>
+        <a href="/Items/Index" class="btn btn-succes btn-lg">
+            <i class="fas fa-list"></i> Update Items 
+        </a>
+        <a href="/Items/Index" class="btn btn-success btn-lg">
+            <i class="fas fa-list"></i> View All Items 
+        </a>
+        <a href="/Admin/Index" class="btn btn-warning btn-lg">
+            <i class="fas fa-shopping-cart"></i> View Farmer Added Items
+        </a>
+    </div>
+</div>
+
+<div class="recent-section" style="margin-top: 30px;">
+    <h3>Recent Orders</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Status</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.RecentOrders != null && Model.RecentOrders.Any())
+            {
+                foreach (var order in Model.RecentOrders)
+                {
+                    <tr>
+                        <td>@order.OrderId</td>
+                        <td>@order.CustomerName</td>
+                        <td>@order.FormattedDate</td>
+                        <td>@order.ItemCount</td>
+                        <td>Rs.@order.TotalAmount.ToString("N2")</td>
+                        <td><span class="badge @order.StatusBadgeClass">@order.Status</span></td>
+                        
+                        
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" class="text-center">No recent orders found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+
+            // You can add dashboard-specific JavaScript here
+            console.log("Dashboard loaded successfully");
+        });
+    </script>
+}

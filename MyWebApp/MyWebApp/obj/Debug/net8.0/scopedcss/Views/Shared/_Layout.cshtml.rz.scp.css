@@ -1,0 +1,75 @@
+/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+a.navbar-brand[b-qgspnya79y] {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+    position: fixed;
+}
+
+a[b-qgspnya79y] {
+    color: #0077cc;
+}
+
+.btn-primary[b-qgspnya79y] {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active[b-qgspnya79y], .nav-pills .show > .nav-link[b-qgspnya79y] {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+    position: fixed;
+}
+
+.border-top[b-qgspnya79y] {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom[b-qgspnya79y] {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow[b-qgspnya79y] {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy[b-qgspnya79y] {
+    font-size: 1rem;
+    line-height: inherit;
+}
+
+/* Fixed footer styling - remove absolute positioning */
+.footer[b-qgspnya79y] {
+    width: 100%;
+    white-space: nowrap;
+    background-color: #6be870; /* Matching your green color */
+    border-top: 1px solid #2d7a31;
+    color: white;
+    padding: 10px 0;
+}
+
+/* Make sure body has proper structure for footer */
+html[b-qgspnya79y] {
+    position: relative;
+    min-height: 100%;
+}
+
+body[b-qgspnya79y] {
+    /* Margin bottom by footer height */
+    margin-bottom: 150px; /* Adjust based on your footer height */
+    padding-bottom: 20px;
+}
+
+/* For flex pages that need different layout */
+.flex-page-container[b-qgspnya79y] {
+    min-height: calc(100vh - 250px);
+    display: flex;
+    flex-direction: column;
+}
+
+    .flex-page-container main[b-qgspnya79y] {
+        flex: 1;
+    }

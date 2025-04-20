@@ -1,0 +1,56 @@
+-- Create the Items table
+CREATE TABLE Items (
+    Id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    Category VARCHAR2(100) NOT NULL,
+    ItemName VARCHAR2(100) NOT NULL,
+    Quantity NUMBER(10) NOT NULL,
+    Price NUMBER(10,2) NOT NULL
+);
+
+-- Optional: Create a sequence and trigger if you prefer not using IDENTITY column
+CREATE SEQUENCE items_seq START WITH 1 INCREMENT BY 1;
+
+CREATE OR REPLACE TRIGGER items_bir 
+BEFORE INSERT ON Items
+FOR EACH ROW
+BEGIN
+SELECT items_seq.NEXTVAL INTO :new.Id FROM dual;
+END;
+-- /
+
+
+-- Optional: Add some sample data
+INSERT INTO Items (Category, ItemName, Quantity, Price) 
+VALUES ('Vegetables', 'Carrots', 50, 2.99);
+
+INSERT INTO Items (Category, ItemName, Quantity, Price) 
+VALUES ('Fruits', 'Apples', 100, 1.49);
+
+INSERT INTO Items (Category, ItemName, Quantity, Price) 
+VALUES ('Dairy Products', 'Milk', 30, 3.49);
+
+INSERT INTO Items (Category, ItemName, Quantity, Price) 
+VALUES ('Bakery Items', 'Bread', 25, 2.29);
+
+-- Commit the changes
+COMMIT;
+
+SELECT * FROM Items;
+
+
+-- Check and create the Items table
+DECLARE
+    v_count NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = 'ITEMS';
+    IF v_count = 0 THEN
+        EXECUTE IMMEDIATE 'CREATE TABLE Items (
+            Id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+            Category VARCHAR2(100) NOT NULL,
+            ItemName VARCHAR2(100) NOT NULL,
+            Quantity NUMBER(10) NOT NULL,
+            Price NUMBER(10,2) NOT NULL
+        )';
+    END IF;
+END;
+/

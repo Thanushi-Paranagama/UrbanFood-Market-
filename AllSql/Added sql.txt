@@ -1,0 +1,94 @@
+CREATE OR REPLACE PROCEDURE save_order(
+    p_customer_id IN NUMBER,
+    p_total_amount IN NUMBER,
+    p_order_id OUT NUMBER
+)
+AS
+BEGIN
+    -- Insert order and return the new order ID
+    INSERT INTO Orders (ID, CustomerID, OrderDate, TotalAmount, Status)
+    VALUES (orders_seq.NEXTVAL, p_customer_id, SYSDATE, p_total_amount, 'Pending')
+    RETURNING ID INTO p_order_id;
+    
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE;
+END save_order;
+/
+
+
+CREATE OR REPLACE PROCEDURE add_order_item(
+    p_order_id IN NUMBER,
+    p_item_id IN NUMBER,
+    p_item_name IN VARCHAR2,
+    p_category IN VARCHAR2,
+    p_unit_price IN NUMBER,
+    p_quantity IN NUMBER,
+    p_total_price IN NUMBER
+)
+AS
+BEGIN
+    -- Insert order item
+    INSERT INTO OrderItems (ID, OrderID, ItemID, ItemName, Category, UnitPrice, Quantity, TotalPrice)
+    VALUES (order_items_seq.NEXTVAL, p_order_id, p_item_id, p_item_name, p_category, p_unit_price, p_quantity, p_total_price);
+    
+    -- Update inventory
+    UPDATE Items 
+    SET Quantity = Quantity - p_quantity 
+    WHERE Id = p_item_id;
+    
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE;
+END add_order_item;
+/
+
+
+CREATE OR REPLACE PROCEDURE process_payment(
+    p_order_id IN NUMBER,
+    p_cardholder_name IN VARCHAR2,
+    p_card_last_four IN VARCHAR2,
+    p_amount IN NUMBER,
+    p_address_line1 IN VARCHAR2,
+    p_address_line2 IN VARCHAR2,
+    p_city IN VARCHAR2,
+    p_state IN VARCHAR2,
+    p_zip_code IN VARCHAR2,
+    p_delivery_date IN DATE,
+    p_delivery_time IN VARCHAR2,
+    p_delivery_notes IN VARCHAR2
+)
+AS
+BEGIN
+    -- Insert delivery address
+    INSERT INTO DeliveryAddresses 
+    (ID, OrderID, AddressLine1, AddressLine2, City, State, ZipCode, DeliveryDate, DeliveryTime, DeliveryNotes)
+    VALUES 
+    (delivery_addresses_seq.NEXTVAL, p_order_id, p_address_line1, p_address_line2, p_city, p_state, p_zip_code, 
+     p_delivery_date, p_delivery_time, p_delivery_notes);
+    
+    -- Insert payment details
+    INSERT INTO PaymentDetails 
+    (ID, OrderID, CardholderName, CardLastFour, Amount, PaymentDate, PaymentStatus)
+    VALUES 
+    (payment_details_seq.NEXTVAL, p_order_id, p_cardholder_name, p_card_last_four, p_amount, SYSDATE, 'Completed');
+    
+    -- Update order status
+    UPDATE Orders
+    SET Status = 'Paid', PaymentDate = SYSDATE
+    WHERE ID = p_order_id;
+    
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE;
+END process_payment;
+/
+
+
+

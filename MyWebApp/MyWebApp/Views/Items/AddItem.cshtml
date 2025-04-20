@@ -1,0 +1,130 @@
+﻿@{
+    ViewData["Title"] = "Add Item";
+}
+<!-- Back Button (Top-Left Corner) -->
+<button onclick="goBack()" class="back-button">← Back</button>
+
+<h2 class="title">Add New Item</h2>
+<a asp-controller="Admin" asp-action="Dashboard" class="btn btn-secondary">
+    <i class="fas fa-arrow-left"></i> Back to Dashboard
+</a>
+<form method="post" asp-action="AddItem" class="form-container">
+    @if (!string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <p class="success-message">@ViewBag.Message</p>
+    }
+    <label for="category">Category:</label>
+    <select name="category" id="category" required>
+        <option value="Vegetables">Vegetables</option>
+        <option value="Fruits">Fruits</option>
+        <option value="Dairy Products">Dairy Products</option>
+        <option value="Bakery Items">Bakery Items</option>
+        <option value="Handcrafts">Handcrafts</option>
+    </select>
+    <label for="itemName">Item Name:</label>
+    <input type="text" name="itemName" id="itemName" required />
+    <label for="quantity">Quantity:</label>
+    <input type="number" name="quantity" id="quantity" required />
+    <label for="price">Price:</label>
+    <input type="number" name="price" id="price" step="0.01" required />
+    <a asp-controller="Items" asp-action="Index" class="data-table-link">Click to view Items Data Table</a>
+    <button type="submit" class="save-button">Save</button>
+</form>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .back-button {
+        position: absolute;
+        top: 80px;
+        left: 20px;
+        background-color: #ff5733;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        transition: 0.3s ease;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+        .back-button:hover {
+            background-color: #c70039;
+        }
+
+    .title {
+        color: #333;
+        margin-top: 60px;
+    }
+
+    .form-container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        width: 300px;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    label {
+        font-weight: bold;
+        text-align: left;
+        display: block;
+    }
+
+    select, input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 4px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .save-button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        .save-button:hover {
+            background-color: #0056b3;
+        }
+
+    .success-message {
+        color: green;
+        margin-top: 15px;
+        font-weight: bold;
+    }
+
+    .data-table-link {
+        color: blue;
+        text-decoration: underline;
+        font-size: 14px;
+        display: block;
+        margin-top: 10px;
+    }
+
+        .data-table-link:hover {
+            color: darkblue;
+        }
+</style>

@@ -1,0 +1,51 @@
+-- Create sequence for OrderItems table
+CREATE SEQUENCE order_items_seq
+  START WITH 1
+  INCREMENT BY 1
+  NOCACHE
+  NOCYCLE;
+
+-- Create OrderItems table
+CREATE TABLE OrderItems (
+  ID NUMBER PRIMARY KEY,
+  OrderID NUMBER NOT NULL,
+  ItemID NUMBER NOT NULL,
+  ItemName VARCHAR2(100) NOT NULL,
+  Category VARCHAR2(50) NOT NULL,
+  UnitPrice NUMBER(10,2) NOT NULL,
+  Quantity NUMBER NOT NULL,
+  TotalPrice NUMBER(10,2) NOT NULL,
+  CONSTRAINT fk_order FOREIGN KEY (OrderID) REFERENCES Orders(ID),
+  CONSTRAINT fk_item FOREIGN KEY (ItemID) REFERENCES Items(ID)
+);
+
+-- Create indexes for better performance
+CREATE INDEX idx_order_customer ON Orders(CustomerID);
+CREATE INDEX idx_orderitem_order ON OrderItems(OrderID);
+CREATE INDEX idx_orderitem_item ON OrderItems(ItemID);
+
+-- Check and create the OrderItems table
+DECLARE
+    v_count NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = 'ORDERITEMS';
+    IF v_count = 0 THEN
+        EXECUTE IMMEDIATE 'CREATE TABLE OrderItems (
+            ID NUMBER PRIMARY KEY,
+            OrderID NUMBER NOT NULL,
+            ItemID NUMBER NOT NULL,
+            ItemName VARCHAR2(100) NOT NULL,
+            Category VARCHAR2(50) NOT NULL,
+            UnitPrice NUMBER(10,2) NOT NULL,
+            Quantity NUMBER NOT NULL,
+            TotalPrice NUMBER(10,2) NOT NULL,
+            CONSTRAINT fk_order FOREIGN KEY (OrderID) REFERENCES Orders(ID),
+            CONSTRAINT fk_item FOREIGN KEY (ItemID) REFERENCES Items(ID)
+        )';
+    END IF;
+END;
+/
+
+--because deleting a fk is difficult 
+ALTER TABLE OrderItems DROP CONSTRAINT fk_item;
+ALTER TABLE OrderItems ADD CONSTRAINT fk_item FOREIGN KEY (ItemID) REFERENCES Items(Id) ON DELETE CASCADE;

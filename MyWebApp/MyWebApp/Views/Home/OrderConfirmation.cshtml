@@ -1,0 +1,315 @@
+﻿@model OrderConfirmationViewModel
+@{
+    ViewData["Title"] = "OrderConfirmation";
+}
+
+<div class="container mt-4">
+    <h2>Complete Your Order</h2>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Order Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p><strong>Customer Name:</strong> <span id="customerName">@Model.CustomerName</span></p>
+                            <p><strong>Customer ID:</strong> <span id="customerId">@Model.CustomerId</span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Contact Number:</strong> <span id="contactNumber">@Model.ContactNumber</span></p>
+                            <p><strong>Order Date:</strong> @DateTime.Now.ToShortDateString()</p>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orderItems">
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <td>@item.ItemName</td>
+                                        <td>@item.Category</td>
+                                        <td>$@item.UnitPrice.ToString("0.00")</td>
+                                        <td>@item.Quantity</td>
+                                        <td>$@item.Total.ToString("0.00")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4" class="text-end"><strong>Grand Total:</strong></td>
+                                    <td id="grandTotal">$@Model.GrandTotal.ToString("0.00")</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <form id="paymentForm" method="post" action="@Url.Action("ProcessPayment", "Order")">
+                <input type="hidden" id="orderId" name="OrderId" value="@Model.OrderId" />
+                <input type="hidden" id="totalAmount" name="TotalAmount" value="@Model.GrandTotal" />
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Delivery Address</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="addressLine1" class="form-label">Address Line 1</label>
+                                <input type="text" class="form-control" id="addressLine1" name="AddressLine1" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="addressLine2" class="form-label">Address Line 2 (Optional)</label>
+                                <input type="text" class="form-control" id="addressLine2" name="AddressLine2">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="city" class="form-label">City</label>
+                                <input type="text" class="form-control" id="city" name="City" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="state" class="form-label">State</label>
+                                <input type="text" class="form-control" id="state" name="State" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="zipCode" class="form-label">Zip Code</label>
+                                <input type="text" class="form-control" id="zipCode" name="ZipCode" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Delivery Schedule</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="deliveryDate" class="form-label">Preferred Delivery Date</label>
+                                <input type="date" class="form-control" id="deliveryDate" name="DeliveryDate" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="deliveryTime" class="form-label">Preferred Time Slot</label>
+                                <select class="form-select" id="deliveryTime" name="DeliveryTime" required>
+                                    <option value="">Select time slot</option>
+                                    <option value="morning">Morning (9:00 AM - 12:00 PM)</option>
+                                    <option value="afternoon">Afternoon (12:00 PM - 4:00 PM)</option>
+                                    <option value="evening">Evening (4:00 PM - 8:00 PM)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="deliveryNotes" class="form-label">Delivery Instructions (Optional)</label>
+                            <textarea class="form-control" id="deliveryNotes" name="DeliveryNotes" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Payment Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="cardholderName" class="form-label">Cardholder Name</label>
+                                <input type="text" class="form-control" id="cardholderName" name="CardholderName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="cardNumber" class="form-label">Card Number</label>
+                                <input type="text" class="form-control" id="cardNumber" name="CardNumber" required
+                                       placeholder="XXXX XXXX XXXX XXXX">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="expiryMonth" class="form-label">Expiry Month</label>
+                                <select class="form-select" id="expiryMonth" name="ExpiryMonth" required>
+                                    <option value="">MM</option>
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04">04</option>
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="expiryYear" class="form-label">Expiry Year</label>
+                                <select class="form-select" id="expiryYear" name="ExpiryYear" required>
+                                    <option value="">YYYY</option>
+                                    @for (int year = DateTime.Now.Year; year <= DateTime.Now.Year + 10; year++)
+                                    {
+                                        <option value="@year">@year</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="cvv" class="form-label">CVV</label>
+                                <input type="text" class="form-control" id="cvv" name="CVV" required
+                                       placeholder="123" maxlength="4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mb-4">
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" id="payNowButton" class="btn btn-success">Pay Now $<span id="payAmount">@Model.GrandTotal.ToString("0.00")</span></button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Order Information</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Order ID:</strong> #@Model.OrderId</p>
+                    <p><strong>Total Amount:</strong> $@Model.GrandTotal.ToString("0.00")</p>
+                    <p><strong>Estimated Tax:</strong> $@(Model.GrandTotal * 0.07m).ToString("0.00")</p>
+                    <p><strong>Shipping:</strong> Free</p>
+                    <hr>
+                    <p><strong>Final Total:</strong> $@((Model.GrandTotal + (Model.GrandTotal * 0.07m)).ToString("0.00"))</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5>Need Help?</h5>
+                </div>
+                <div class="card-body">
+                    <p>If you have any questions about your order, please contact our customer support:</p>
+                    <p><i class="fas fa-phone-alt"></i> 070 5716510 / 072 2716510</p>
+                    <p><i class="fas fa-envelope"></i> urbanfood@gmail.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading overlay -->
+<div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 9999;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; text-align: center;">
+        <div class="spinner-border text-light" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2">Processing your payment...</p>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Set minimum date for delivery to tomorrow
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const tomorrowFormatted = tomorrow.toISOString().split('T')[0];
+            $('#deliveryDate').attr('min', tomorrowFormatted);
+
+            // Format card number input
+            $('#cardNumber').on('input', function () {
+                let value = $(this).val().replace(/\D/g, '');
+                let formattedValue = '';
+
+                for (let i = 0; i < value.length; i++) {
+                    if (i > 0 && i % 4 === 0) {
+                        formattedValue += ' ';
+                    }
+                    formattedValue += value[i];
+                }
+
+                $(this).val(formattedValue);
+
+                // Max 16 digits + 3 spaces
+                if (value.length > 16) {
+                    $(this).val(formattedValue.substring(0, 19));
+                }
+            });
+
+            // Format CVV input - numbers only
+            $('#cvv').on('input', function () {
+                $(this).val($(this).val().replace(/\D/g, ''));
+            });
+
+            // Handle form submission
+            $('#paymentForm').on('submit', function (e) {
+                e.preventDefault();
+
+                // Show loading overlay
+                $('#loadingOverlay').show();
+
+                // Get form data
+                const formData = {
+                    orderId: $('#orderId').val(),
+                    totalAmount: $('#totalAmount').val(),
+                    addressLine1: $('#addressLine1').val(),
+                    addressLine2: $('#addressLine2').val(),
+                    city: $('#city').val(),
+                    state: $('#state').val(),
+                    zipCode: $('#zipCode').val(),
+                    deliveryDate: $('#deliveryDate').val(),
+                    deliveryTime: $('#deliveryTime').val(),
+                    deliveryNotes: $('#deliveryNotes').val(),
+                    cardholderName: $('#cardholderName').val(),
+                    // For security, we would normally not send full card details in a real application
+                    // This is just for demonstration purposes
+                    cardNumber: $('#cardNumber').val().replace(/\s/g, ''),
+                    expiryMonth: $('#expiryMonth').val(),
+                    expiryYear: $('#expiryYear').val(),
+                    cvv: $('#cvv').val()
+                };
+
+                // Send payment details to server
+                $.ajax({
+                    url: '@Url.Action("ProcessPayment", "Order")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function (response) {
+                        // Hide loading overlay
+                        $('#loadingOverlay').hide();
+
+                        if (response.success) {
+                            // Show success message and redirect
+                            alert('Payment processed successfully!');
+                            window.location.href = '@Url.Action("PaymentSuccess", "Order")';
+                        } else {
+                            alert('Payment failed: ' + (response.message || 'Unknown error'));
+                        }
+                    },
+                    error: function (error) {
+                        // Hide loading overlay
+                        $('#loadingOverlay').hide();
+
+                        console.error('Error processing payment:', error);
+                        alert('Payment processing failed. Please try again.');
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,125 @@
+-- Create the main table if it doesn't exist
+CREATE TABLE FarmerItems (
+    Id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    Category VARCHAR2(100) NOT NULL,
+    ItemName VARCHAR2(100) NOT NULL,
+    Quantity NUMBER(10) NOT NULL,
+    Price NUMBER(10,2) NOT NULL
+);
+
+-- Create the log table for tracking changes
+CREATE TABLE FarmerItems_Log (
+    LogID NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    ItemID NUMBER,
+    Category VARCHAR2(100),
+    ItemName VARCHAR2(100),
+    Quantity NUMBER(10),
+    ActionDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ActionType VARCHAR2(20)
+);
+
+-- Create the delete log table specifically for deletions
+CREATE TABLE FarmerItems_DeleteLog (
+    LogID NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    ItemID NUMBER,
+    Category VARCHAR2(100),
+    ItemName VARCHAR2(100),
+    DeletedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    DeletedBy VARCHAR2(100) DEFAULT USER
+);
+
+-- Create procedure for adding items
+CREATE OR REPLACE PROCEDURE AddItem(
+    p_Category IN VARCHAR2,
+    p_ItemName IN VARCHAR2,
+    p_Quantity IN NUMBER,
+    p_Price IN NUMBER
+) AS
+BEGIN
+    INSERT INTO FarmerItems (Category, ItemName, Quantity, Price)
+    VALUES (p_Category, p_ItemName, p_Quantity, p_Price);
+    
+    COMMIT;
+END AddItem;
+/
+
+-- Create procedure for updating items
+CREATE OR REPLACE PROCEDURE UpdateItem(
+    p_Id IN NUMBER,
+    p_Category IN VARCHAR2,
+    p_ItemName IN VARCHAR2,
+    p_Quantity IN NUMBER,
+    p_Price IN NUMBER
+) AS
+BEGIN
+    UPDATE FarmerItems
+    SET Category = p_Category,
+        ItemName = p_ItemName,
+        Quantity = p_Quantity, 
+        Price = p_Price
+    WHERE Id = p_Id;
+    
+    COMMIT;
+END UpdateItem;
+/
+
+-- Create procedure for deleting items with log tracking
+CREATE OR REPLACE PROCEDURE DeleteFarmerItem(
+    p_Id IN NUMBER
+) AS
+    v_Category VARCHAR2(100);
+    v_ItemName VARCHAR2(100);
+BEGIN
+    -- First, get the item details before deleting
+    SELECT Category, ItemName 
+    INTO v_Category, v_ItemName
+    FROM FarmerItems
+    WHERE Id = p_Id;
+    
+    -- Insert into the delete log
+    INSERT INTO FarmerItems_DeleteLog (ItemID, Category, ItemName)
+    VALUES (p_Id, v_Category, v_ItemName);
+    
+    -- Delete the item
+    DELETE FROM FarmerItems
+    WHERE Id = p_Id;
+    
+    COMMIT;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Item with ID ' || p_Id || ' not found.');
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE_APPLICATION_ERROR(-20002, 'Error deleting item: ' || SQLERRM);
+END DeleteFarmerItem;
+/
+
+-- Create trigger for insert operations
+CREATE OR REPLACE TRIGGER trg_ItemInsert
+AFTER INSERT ON FarmerItems
+FOR EACH ROW
+BEGIN
+    INSERT INTO FarmerItems_Log (ItemID, Category, ItemName, Quantity, ActionType)
+    VALUES (:NEW.Id, :NEW.Category, :NEW.ItemName, :NEW.Quantity, 'INSERT');
+END;
+/
+
+-- Create trigger for update operations
+CREATE OR REPLACE TRIGGER trg_ItemUpdate
+AFTER UPDATE ON FarmerItems
+FOR EACH ROW
+BEGIN
+    INSERT INTO FarmerItems_Log (ItemID, Category, ItemName, Quantity, ActionType)
+    VALUES (:NEW.Id, :NEW.Category, :NEW.ItemName, :NEW.Quantity, 'UPDATE');
+END;
+/
+
+-- Create trigger for delete operations
+CREATE OR REPLACE TRIGGER trg_ItemDelete
+BEFORE DELETE ON FarmerItems
+FOR EACH ROW
+BEGIN
+    INSERT INTO FarmerItems_Log (ItemID, Category, ItemName, Quantity, ActionType)
+    VALUES (:OLD.Id, :OLD.Category, :OLD.ItemName, :OLD.Quantity, 'DELETE');
+END;
+/

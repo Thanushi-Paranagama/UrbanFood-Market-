@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Farmer Dashboard";
+}
+
+<div class="container mt-4">
+    <div class="card shadow border-0">
+        <div class="card-header bg-success text-white">
+            <h2 class="mb-0">Farmer Dashboard</h2>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-success">
+                <h4>Welcome, @User.Identity.Name!</h4>
+                <p>Manage your farm items through the options below.</p>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 border-primary hover-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-plus-circle fa-3x text-primary mb-3"></i>
+                            <h3>Add Item</h3>
+                            <p>Add new products to your inventory</p>
+                            <a asp-controller="Farmer" asp-action="AddItem" class="btn btn-primary stretched-link">Add New Item</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 border-warning hover-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-list fa-3x text-warning mb-3"></i>
+                            <h3>View Items</h3>
+                            <p>View all your current inventory</p>
+                            <a asp-controller="Farmer" asp-action="Index" class="btn btn-warning stretched-link">View Items</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 border-danger hover-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-sign-out-alt fa-3x text-danger mb-3"></i>
+                            <h3>Log Out</h3>
+                            <p>Log out from your account</p>
+                            <a asp-controller="Home" asp-action="Login" class="btn btn-danger stretched-link">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-card {
+        transition: transform 0.3s ease;
+    }
+
+        .hover-card:hover {
+            transform: translateY(-10px);
+        }
+
+    .card {
+        border-radius: 10px;
+    }
+
+    .card-header {
+        border-radius: 10px 10px 0 0;
+    }
+</style>

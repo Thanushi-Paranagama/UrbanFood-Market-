@@ -1,0 +1,42 @@
+
+//order
+
+CREATE SEQUENCE orders_seq
+  START WITH 1
+  INCREMENT BY 1
+  NOCACHE
+  NOCYCLE;
+
+-- Create Orders table
+CREATE TABLE Orders (
+  ID NUMBER PRIMARY KEY,
+  CustomerID NUMBER NOT NULL,
+  OrderDate TIMESTAMP DEFAULT SYSTIMESTAMP,
+  TotalAmount NUMBER(10,2) NOT NULL,
+  CONSTRAINT fk_customer FOREIGN KEY (CustomerID) REFERENCES Customers(ID)
+);
+
+-- Add Status and PaymentDate columns to Orders table if they don't exist
+ALTER TABLE Orders ADD (
+    Status VARCHAR2(50) DEFAULT 'Pending',
+    PaymentDate DATE NULL
+);
+
+-- Check and create the Orders table
+DECLARE
+    v_count NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = 'ORDERS';
+    IF v_count = 0 THEN
+        EXECUTE IMMEDIATE 'CREATE TABLE Orders (
+            ID NUMBER PRIMARY KEY,
+            CustomerID NUMBER NOT NULL,
+            OrderDate TIMESTAMP DEFAULT SYSTIMESTAMP,
+            TotalAmount NUMBER(10,2) NOT NULL,
+            Status VARCHAR2(50) DEFAULT ''Pending'',
+            PaymentDate DATE NULL,
+            CONSTRAINT fk_customer FOREIGN KEY (CustomerID) REFERENCES Customers(ID)
+        )';
+    END IF;
+END;
+/

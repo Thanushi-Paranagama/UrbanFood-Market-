@@ -1,0 +1,317 @@
+﻿@model Customer
+@{
+    ViewData["Title"] = "Place Order";
+}
+
+<div class="container mt-4">
+    <h2>Place Order</h2>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Customer Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Customer ID:</strong> @Model.ID</p>
+                    <p><strong>Name:</strong> @Model.Name</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Contact Number:</strong> @Model.ContactNumber</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Available Items</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="itemsTable" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Category</th>
+                            <th>Unit Price</th>
+                            <th>Available Quantity</th>
+                            <th>Order Quantity</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemList">
+                        <!-- Items will be loaded dynamically -->
+                        <tr>
+                            <td colspan="6" class="text-center">Loading items...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Shopping Cart</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="cartTable" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Category</th>
+                            <th>Unit Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cartItems">
+                        <!-- Cart items will be added here -->
+                        <tr id="emptyCartRow">
+                            <td colspan="6" class="text-center">Your cart is empty</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" class="text-end"><strong>Grand Total:</strong></td>
+                            <td id="grandTotal">$0.00</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <a href="@Url.Action("Index", "Customer")" class="btn btn-secondary">Back</a>
+        <button id="payButton" class="btn btn-success" disabled>Proceed to Payment</button>
+    </div>
+
+    <!-- Loading overlay -->
+    <div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 9999;">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; text-align: center;">
+            <div class="spinner-border text-light" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Processing your order...</p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Store customer data
+            const customerId = @Model.ID;
+            let cartItems = [];
+            let grandTotal = 0;
+
+            // Load all items
+            loadItems();
+
+            function loadItems() {
+                $.ajax({
+                    url: '@Url.Action("GetAllItems", "Order")',
+                    type: 'GET',
+                    success: function (data) {
+                        $('#itemList').empty();
+
+                        if (data.length === 0) {
+                            $('#itemList').html('<tr><td colspan="6" class="text-center">No items available</td></tr>');
+                            return;
+                        }
+
+                        data.forEach(function (item) {
+                            const row = `
+                                        <tr data-id="${item.id}">
+                                            <td>${item.itemName}</td>
+                                            <td>${item.category}</td>
+                                            <td>$${item.price.toFixed(2)}</td>
+                                            <td>${item.quantity}</td>
+                                            <td>
+                                                <input type="number" class="form-control order-quantity" min="1" max="${item.quantity}" value="1" ${item.quantity < 1 ? 'disabled' : ''}>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-primary btn-sm add-to-cart" ${item.quantity < 1 ? 'disabled' : ''}>Add to Cart</button>
+                                            </td>
+                                        </tr>`;
+                            $('#itemList').append(row);
+                        });
+
+                        // Add event listener for Add to Cart buttons
+                        $('.add-to-cart').on('click', function () {
+                            const row = $(this).closest('tr');
+                            const itemId = row.data('id');
+                            const orderQuantity = parseInt(row.find('.order-quantity').val());
+
+                            if (orderQuantity <= 0) {
+                                alert('Please enter a valid quantity.');
+                                return;
+                            }
+
+                            const availableQuantity = parseInt(row.find('td:eq(3)').text());
+                            if (orderQuantity > availableQuantity) {
+                                alert('Order quantity cannot exceed available quantity.');
+                                return;
+                            }
+
+                            // Get item details
+                            const itemName = row.find('td:eq(0)').text();
+                            const category = row.find('td:eq(1)').text();
+                            const unitPrice = parseFloat(row.find('td:eq(2)').text().replace('$', ''));
+
+                            // Check if item is already in cart
+                            const existingItemIndex = cartItems.findIndex(item => item.id === itemId);
+                            if (existingItemIndex !== -1) {
+                                cartItems[existingItemIndex].quantity += orderQuantity;
+                                cartItems[existingItemIndex].total = cartItems[existingItemIndex].quantity * cartItems[existingItemIndex].unitPrice;
+                            } else {
+                                // Add to cart array
+                                cartItems.push({
+                                    id: itemId,
+                                    itemName: itemName,
+                                    category: category,
+                                    unitPrice: unitPrice,
+                                    quantity: orderQuantity,
+                                    total: unitPrice * orderQuantity
+                                });
+                            }
+
+                            // Update available quantity display
+                            const newAvailableQty = availableQuantity - orderQuantity;
+                            row.find('td:eq(3)').text(newAvailableQty);
+
+                            // Update max value for quantity input
+                            row.find('.order-quantity').attr('max', newAvailableQty);
+
+                            // Disable add to cart if no more quantity
+                            if (newAvailableQty <= 0) {
+                                row.find('.order-quantity').prop('disabled', true);
+                                row.find('.add-to-cart').prop('disabled', true);
+                            }
+
+                            // Reset quantity input to 1 or max available
+                            row.find('.order-quantity').val(Math.min(1, newAvailableQty));
+
+                            // Update cart display
+                            updateCart();
+                        });
+                    },
+                    error: function (error) {
+                        console.error('Error loading items:', error);
+                        $('#itemList').html('<tr><td colspan="6" class="text-center text-danger">Failed to load items. Please try again.</td></tr>');
+                    }
+                });
+            }
+
+            function updateCart() {
+                $('#cartItems').empty();
+                $('#emptyCartRow').remove();
+                grandTotal = 0;
+
+                if (cartItems.length === 0) {
+                    $('#cartItems').html('<tr id="emptyCartRow"><td colspan="6" class="text-center">Your cart is empty</td></tr>');
+                    $('#payButton').prop('disabled', true);
+                } else {
+                    cartItems.forEach(function (item, index) {
+                        grandTotal += item.total;
+                        const row = `
+                                    <tr>
+                                        <td>${item.itemName}</td>
+                                        <td>${item.category}</td>
+                                        <td>$${item.unitPrice.toFixed(2)}</td>
+                                        <td>${item.quantity}</td>
+                                        <td>$${item.total.toFixed(2)}</td>
+                                        <td>
+                                            <button class="btn btn-danger btn-sm remove-from-cart" data-index="${index}">Remove</button>
+                                        </td>
+                                    </tr>`;
+                        $('#cartItems').append(row);
+                    });
+
+                    // Enable pay button
+                    $('#payButton').prop('disabled', false);
+                }
+
+                // Update grand total
+                $('#grandTotal').text('$' + grandTotal.toFixed(2));
+
+                // Add event listener for Remove from Cart buttons
+                $('.remove-from-cart').on('click', function () {
+                    const index = $(this).data('index');
+                    const removedItem = cartItems[index];
+
+                    // Update the available items table
+                    const itemRow = $(`#itemList tr[data-id="${removedItem.id}"]`);
+                    if (itemRow.length) {
+                        const currentQty = parseInt(itemRow.find('td:eq(3)').text());
+                        const newQty = currentQty + removedItem.quantity;
+
+                        // Update displayed quantity
+                        itemRow.find('td:eq(3)').text(newQty);
+
+                        // Update max value for quantity input
+                        itemRow.find('.order-quantity').attr('max', newQty);
+
+                        // Enable input and button if they were disabled
+                        itemRow.find('.order-quantity').prop('disabled', false);
+                        itemRow.find('.add-to-cart').prop('disabled', false);
+
+                        // Reset quantity input to 1
+                        itemRow.find('.order-quantity').val(1);
+                    }
+
+                    // Remove from cart array
+                    cartItems.splice(index, 1);
+
+                    // Update cart display
+                    updateCart();
+                });
+            }
+
+            // Handle pay button click
+            $('#payButton').on('click', function () {
+                // Show loading overlay
+                $('#loadingOverlay').show();
+
+                // Prepare order data
+                const orderData = {
+                    customerId: customerId,
+                    items: cartItems
+                };
+
+                // Send order to server
+                $.ajax({
+                    url: '@Url.Action("SaveOrder", "Order")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(orderData),
+                    success: function (response) {
+                        // Hide loading overlay
+                        $('#loadingOverlay').hide();
+
+                        if (response.success) {
+                            // Show success message
+                            alert('Your order has been placed successfully!');
+                            // Redirect to confirmation page
+                            window.location.href = '@Url.Action("OrderConfirmation", "Order")?orderId=' + response.orderId;
+                        } else {
+                            alert('Failed to place order: ' + (response.message || 'Unknown error'));
+                        }
+                    },
+                    error: function (error) {
+                        // Hide loading overlay
+                        $('#loadingOverlay').hide();
+
+                        console.error('Error placing order:', error);
+                        alert('Failed to place order. Please try again.');
+                    }
+                });
+            });
+        });
+    </script>
+}

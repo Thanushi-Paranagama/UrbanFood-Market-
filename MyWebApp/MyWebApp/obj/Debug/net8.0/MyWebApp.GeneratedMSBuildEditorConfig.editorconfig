@@ -1,0 +1,151 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = MyWebApp
+build_property.RootNamespace = MyWebApp
+build_property.ProjectDir = C:\Users\Paranagama\Desktop\DM2\MyWebApp\MyWebApp\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\Paranagama\Desktop\DM2\MyWebApp\MyWebApp
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/AddItems/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRkSXRlbXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Admin/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Admin/DeleteItem.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGVsZXRlSXRlbS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Admin/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Admin/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Admin/ViewDeleteLogs.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cVmlld0RlbGV0ZUxvZ3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Admin/ViewPlaceOrder.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cVmlld1BsYWNlT3JkZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Admin/_AdminLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cX0FkbWluTGF5b3V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Contact/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFjdFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Contact/ThankYou.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFjdFxUaGFua1lvdS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Farmer/AddItem.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmFybWVyXEFkZEl0ZW0uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Farmer/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmFybWVyXERhc2hib2FyZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Farmer/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmFybWVyXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Farmer/UpdateItem.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmFybWVyXFVwZGF0ZUl0ZW0uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Farmer/ViewIndex.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmFybWVyXFZpZXdJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Home/Guest.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxHdWVzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Home/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Home/Logout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxMb2dvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Home/OrderConfirmation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxPcmRlckNvbmZpcm1hdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Home/PaymentSuccess.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQYXltZW50U3VjY2Vzcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Home/PlaceOrder.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQbGFjZU9yZGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Home/Review.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxSZXZpZXcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Items/AddItem.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSXRlbXNcQWRkSXRlbS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Items/DeleteItem.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSXRlbXNcRGVsZXRlSXRlbS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Items/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSXRlbXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Items/UpdateItem.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSXRlbXNcVXBkYXRlSXRlbS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Paranagama/Desktop/DM2/MyWebApp/MyWebApp/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-qgspnya79y

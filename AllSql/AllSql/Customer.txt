@@ -1,0 +1,60 @@
+CREATE TABLE Customers (
+    ID NUMBER PRIMARY KEY,
+    Name VARCHAR2(100),
+    ContactNumber VARCHAR2(15)
+);
+
+CREATE SEQUENCE customers_seq START WITH 1 INCREMENT BY 1;
+
+CREATE OR REPLACE TRIGGER customers_trigger
+BEFORE INSERT ON Customers
+FOR EACH ROW
+BEGIN
+  SELECT customers_seq.NEXTVAL INTO :NEW.ID FROM dual;
+END;
+
+INSERT INTO Customers (ID, Name, ContactNumber) VALUES (customers_seq.NEXTVAL, 'Test User5', '1234555590');
+
+SELECT * FROM Customers;
+
+-- Check and create the Customers table
+DECLARE
+    v_count NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = 'CUSTOMERS';
+    IF v_count = 0 THEN
+        EXECUTE IMMEDIATE 'CREATE TABLE Customers (
+            ID NUMBER PRIMARY KEY,
+            Name VARCHAR2(100),
+            ContactNumber VARCHAR2(15)
+        )';
+    END IF;
+END;
+/
+
+-- Check and create the Customers sequence
+DECLARE
+    v_count NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO v_count FROM user_sequences WHERE sequence_name = 'CUSTOMERS_SEQ';
+    IF v_count = 0 THEN
+        EXECUTE IMMEDIATE 'CREATE SEQUENCE customers_seq START WITH 1 INCREMENT BY 1';
+    END IF;
+END;
+/
+
+-- Check and create the Customers trigger
+DECLARE
+    v_count NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO v_count FROM user_triggers WHERE trigger_name = 'CUSTOMERS_TRIGGER';
+    IF v_count = 0 THEN
+        EXECUTE IMMEDIATE 'CREATE OR REPLACE TRIGGER customers_trigger
+        BEFORE INSERT ON Customers
+        FOR EACH ROW
+        BEGIN
+            SELECT customers_seq.NEXTVAL INTO :NEW.ID FROM dual;
+        END;';
+    END IF;
+END;
+/

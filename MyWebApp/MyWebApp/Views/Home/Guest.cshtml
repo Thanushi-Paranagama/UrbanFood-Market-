@@ -1,0 +1,103 @@
+﻿@model Customer
+@{
+    ViewData["Title"] = "Customer Information";
+}
+<div class="guest-container">
+    <div class="form-container">
+        <h2 class="title">@ViewData["Title"]</h2>
+        <form method="post" asp-controller="Customer" asp-action="Submit">
+            <div class="form-group">
+                <label for="Name">Name</label>
+                <input type="text" id="Name" name="Name" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label for="ContactNumber">Contact Number</label>
+                <input type="text" id="ContactNumber" name="ContactNumber" class="form-control" required />
+            </div>
+            <div class="button-group">
+                <a href="javascript:history.back()" class="btn btn-secondary">Back</a>
+                <button type="submit" class="btn btn-primary">Place Order</button>
+            </div>
+        </form>
+    </div>
+</div>
+<style>
+    /* Guest page specific styling */
+    .guest-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - 200px); /* Account for header and footer */
+        background: url('@Url.Content("~/images/web5.jpg")') no-repeat center center fixed;
+        background-size: cover;
+        padding: 40px 0;
+    }
+
+    .form-container {
+        width: 100%;
+        max-width: 500px;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 30px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+    }
+
+    .title {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 16px;
+        text-decoration: none;
+        border-radius: 5px;
+        text-align: center;
+        transition: background 0.3s;
+        cursor: pointer;
+        display: inline-block;
+    }
+
+    .guest-container .btn-primary {
+        background-color: #007bff;
+        color: white;
+        border: none;
+    }
+
+        .guest-container .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .guest-container .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        border: none;
+    }
+
+        .guest-container .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+</style>

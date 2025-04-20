@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Payment Successful";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-success">
+                <div class="card-header bg-success text-white">
+                    <h2 class="mb-0 text-center">Payment Successful!</h2>
+                </div>
+                <div class="card-body text-center py-5">
+                    <div class="mb-4">
+                        <i class="fas fa-check-circle text-success" style="font-size: 72px;"></i>
+                    </div>
+                    <h3>Thank you for your order!</h3>
+                    <p class="lead mb-4">Your payment has been processed successfully.</p>
+                    
+                    <p>Your items will be delivered according to your chosen delivery schedule.</p>
+                    <div class="mt-4">
+                        <a href="@Url.Action("Login", "Home")" class="btn btn-primary">Continue Shopping</a>
+                    </div>
+                </div>
+                <div class="card-footer bg-light">
+                    <p class="mb-0 text-center">If you have any questions about your order, please contact our customer service at support@urbanfood.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

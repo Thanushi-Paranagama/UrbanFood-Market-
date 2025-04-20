@@ -1,0 +1,68 @@
+﻿@{
+    ViewData["Title"] = "Add Item";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="mb-0">Add New Item</h2>
+                        <a asp-controller="Farmer" asp-action="Dashboard" class="btn btn-light btn-sm">
+                            <i class="fas fa-home"></i> Dashboard
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form method="post" asp-action="AddItem">
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Category:</label>
+                            <select name="category" id="category" class="form-select" required>
+                                <option value="Vegetables">Vegetables</option>
+                                <option value="Fruits">Fruits</option>
+                                <option value="Dairy Products">Dairy Products</option>
+                                <option value="Bakery Items">Bakery Items</option>
+                                <option value="Handcrafts">Handcrafts</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="itemName" class="form-label">Item Name:</label>
+                            <input type="text" name="itemName" id="itemName" class="form-control" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="quantity" class="form-label">Quantity:</label>
+                            <input type="number" name="quantity" id="quantity" class="form-control" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="price" class="form-label">Price:</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="number" name="price" id="price" step="0.01" class="form-control" required />
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a asp-controller="Farmer" asp-action="Index" class="text-decoration-none">
+                                <i class="fas fa-table"></i> View Items Data Table
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save"></i> Save Item
+                            </button>
+                        </div>
+                    </form>
+
+                    @if (!string.IsNullOrEmpty(ViewBag.Message))
+                    {
+                        <div class="alert alert-success mt-3">
+                            <i class="fas fa-check-circle"></i> @ViewBag.Message
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

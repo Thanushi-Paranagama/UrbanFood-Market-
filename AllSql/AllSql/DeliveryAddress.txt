@@ -1,0 +1,44 @@
+-- Create sequence for delivery addresses
+CREATE SEQUENCE delivery_addresses_seq
+    START WITH 1
+    INCREMENT BY 1
+    NOCACHE
+    NOCYCLE;
+
+-- Create delivery addresses table
+CREATE TABLE DeliveryAddresses (
+    ID NUMBER PRIMARY KEY,
+    OrderID NUMBER NOT NULL,
+    AddressLine1 VARCHAR2(255) NOT NULL,
+    AddressLine2 VARCHAR2(255),
+    City VARCHAR2(100) NOT NULL,
+    State VARCHAR2(100) NOT NULL,
+    ZipCode VARCHAR2(20) NOT NULL,
+    DeliveryDate DATE NOT NULL,
+    DeliveryTime VARCHAR2(50) NOT NULL,
+    DeliveryNotes VARCHAR2(500),
+    CONSTRAINT fk_delivery_order FOREIGN KEY (OrderID) REFERENCES Orders(ID)
+);
+
+-- Check and create the DeliveryAddresses table
+DECLARE
+    v_count NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = 'DELIVERYADDRESSES';
+    IF v_count = 0 THEN
+        EXECUTE IMMEDIATE 'CREATE TABLE DeliveryAddresses (
+            ID NUMBER PRIMARY KEY,
+            OrderID NUMBER NOT NULL,
+            AddressLine1 VARCHAR2(255) NOT NULL,
+            AddressLine2 VARCHAR2(255),
+            City VARCHAR2(100) NOT NULL,
+            State VARCHAR2(100) NOT NULL,
+            ZipCode VARCHAR2(20) NOT NULL,
+            DeliveryDate DATE NOT NULL,
+            DeliveryTime VARCHAR2(50) NOT NULL,
+            DeliveryNotes VARCHAR2(500),
+            CONSTRAINT fk_delivery_order FOREIGN KEY (OrderID) REFERENCES Orders(ID)
+        )';
+    END IF;
+END;
+/
